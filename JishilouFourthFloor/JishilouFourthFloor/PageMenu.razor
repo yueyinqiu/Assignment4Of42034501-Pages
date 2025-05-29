@@ -1,0 +1,11 @@
+﻿<div class="navmenu" style="overflow: clip auto">
+    <nav class="sitenav" aria-labelledby="main-menu">
+        <FluentNavMenu Id="main-menu" Width="250">
+            @foreach (var room in Data.Rooms)
+            {
+                var href = $"/{room.Key}";
+                <FluentNavLink Href=@href Match="NavLinkMatch.All">@room.Key</FluentNavLink>
+            }
+        </FluentNavMenu>
+    </nav>
+</div>

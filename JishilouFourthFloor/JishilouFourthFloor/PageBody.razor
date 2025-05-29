@@ -1,0 +1,75 @@
+﻿@page "/{room?}"
+
+@if (Room is null)
+{
+    <PageTitle>
+        济事楼 4 楼
+    </PageTitle>
+
+    <h1>
+        欢迎使用济事楼 4 楼导览系统！
+    </h1>
+}
+else if (@Data.Rooms.TryGetValue(Room, out var room))
+{
+    <PageTitle>
+        @Room - 济事楼 4 楼
+    </PageTitle>
+
+    <h1>
+        济事楼 @Room
+    </h1>
+}
+else
+{
+    <PageTitle>
+        未找到房间 - 济事楼 4 楼
+    </PageTitle>
+
+    <h1>
+        未找到房间
+    </h1>
+}
+
+<PageMap Current="@Room"></PageMap>
+
+<div style="margin-top: 20px">
+    @if (Room is null)
+    {
+        <text>
+            左侧导航栏和上方地图可以直接跳转到指定房间。右上角的搜索栏可以对部门、老师等信息进行检索。
+        </text>
+    }
+    else if (@Data.Rooms.TryGetValue(Room, out var room))
+    {
+        var tags = new Dictionary<string, List<string>>();
+        foreach (var tag in room.Tags)
+        {
+            if (!tags.TryGetValue(tag.Key, out var tagList))
+            {
+                tagList = new List<string>();
+                tags.Add(tag.Key, tagList);
+            }
+            tagList.Add(tag.Display ?? tag.Value);
+        }
+
+        <ul>
+            @foreach (var tagList in tags)
+            {
+                <li>@($"{tagList.Key}：{string.Join("、", tagList.Value)}")</li>
+            }
+        </ul>
+    }
+    else
+    {
+        <text>
+            没有找到 @Room 房间。可以通过左侧导航栏和上方地图直接跳转。或者使用右上角的搜索栏进行检索。
+        </text>
+    }
+</div>
+
+@code
+{
+    [Parameter]
+    public string? Room { get; set; }
+}

@@ -1,0 +1,31 @@
+﻿@inject NavigationManager NavigationManager
+
+<FluentAutocomplete TOption="PageSearch.Option" Width="250px" Multiple="false" OptionText="@(item => item.Display)" @bind-ValueText="@input" @bind-SelectedOption="selected" @bind-SelectedOption:after="OnSelect" OnOptionsSearch="@OnSearch" ShowOverlayOnEmptyResults="false">
+</FluentAutocomplete>
+
+@code
+{
+    private string input = "";
+    private Option? selected;
+
+    private record Option(string Display, string Room);
+
+
+    private void OnSearch(OptionsSearchEventArgs<Option> e)
+    {
+        var results = from room in Data.Rooms
+                      from tag in room.Value.Tags
+                      where tag.Value.Contains(input)
+                      select new Option($"{tag.Value}（{room.Key}）", room.Key);
+        e.Items = results.ToArray();
+    }
+
+    private void OnSelect()
+    {
+        if (this.selected is not null)
+        {
+            NavigationManager.NavigateTo($"/{selected?.Room ?? ""}");
+            this.selected = null;
+        }
+    }
+}

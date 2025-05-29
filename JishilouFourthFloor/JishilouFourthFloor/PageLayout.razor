@@ -1,0 +1,29 @@
+﻿@inherits LayoutComponentBase
+
+<FluentMenuProvider />
+
+<FluentLayout Style="max-height: 100vh">
+    <FluentHeader>
+        济事楼 4 楼
+        <FluentSpacer />
+        <PageSearch></PageSearch>
+    </FluentHeader>
+    <FluentStack Class="main" Orientation="Orientation.Horizontal" Width="100%">
+        <PageMenu />
+        <FluentBodyContent Class="body-content">
+            <ErrorBoundary>
+                <ChildContent>
+                    <div class="content">
+                        @Body
+                    </div>
+                </ChildContent>
+                <ErrorContent Context="ex">
+                    <div class="blazor-error-boundary">@ex.Message</div>
+                </ErrorContent>
+            </ErrorBoundary>
+        </FluentBodyContent>
+    </FluentStack>
+    <FluentFooter>
+        <a href="https://git.tongji.edu.cn/2150010/assignment4of42034501.git" target="_blank">https://git.tongji.edu.cn/2150010/assignment4of42034501.git</a>
+    </FluentFooter>
+</FluentLayout>
